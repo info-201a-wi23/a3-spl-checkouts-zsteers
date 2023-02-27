@@ -40,7 +40,7 @@ Feel free to calculate and report values that you find relevant.
 
 ### First Trends Over Time Chart
 
-```{r echo = FALSE, warning = FALSE, message = FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 library("dplyr")
 library("ggplot2")
 library("plotly")
@@ -70,6 +70,10 @@ Here's an example of how to run an R script inside an RMarkdown file:
 
 ### Second Trends Over Time Chart
 
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+```
+
 Include a chart. Make sure to describe why you included the chart, and what patterns emerged
 
 The second chart that you will create and include will show another trend over time of your variable/topic/interest. Think carefully about what you want to communicate to your user (you may have to find relevant trends in the dataset first!). Here are some requirements to help guide your design:
@@ -85,6 +89,23 @@ When we say "clear" or "human readable" titles and labels, that means that you s
 Here's an example of how to run an R script inside an RMarkdown file:
 
 ### Your Choice
+
+```{r}
+popular_publishers <- spl_data %>% 
+  group_by(Publisher) %>% 
+  summarize(top_checkouts = sum(n_distinct(Checkouts, na.rm = TRUE))) %>%
+  arrange(desc(top_checkouts)) %>% 
+  filter(!Publisher %in% c(" ", "NULL")) %>% 
+  filter(row_number() <= 5)
+bar_plot <- ggplot(data = popular_publishers) +
+  geom_col(mapping = aes(
+    x = Publisher,
+    y = top_checkouts,
+    fill = Publisher,
+    text = paste("Checkouts:", top_checkouts))
+    )
+ggplotly(bar_plot, tooltip = "text")
+```
 
 The last chart is up to you. It could be a line plot, scatter plot, histogram, bar plot, stacked bar plot, and more. Here are some requirements to help guide your design:
 

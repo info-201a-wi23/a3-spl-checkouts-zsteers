@@ -12,5 +12,18 @@ ggplot() +
   geom_point(data = physical_book_checkouts_per_year, aes(x = CheckoutYear, y = checkouts_per_year))
 # Average number of checkouts per item?
 avg_checkouts <- spl_data %>% summarise(avg = mean(Checkouts)) %>% pull(avg)
-# Top 5 most popular subjects
-popular_subjects <- spl_data %>% group_by(Subjects) %>% summarize(top_subjects = )
+# Top 5 most popular publishers
+popular_publishers <- spl_data %>% 
+  group_by(Publisher) %>% 
+  summarize(top_checkouts = sum(n_distinct(Checkouts, na.rm = TRUE))) %>%
+  arrange(desc(top_checkouts)) %>% 
+  filter(!Publisher %in% c(" ", "NULL")) %>% 
+  filter(row_number() <= 5)
+bar_plot <- ggplot(data = popular_publishers) +
+  geom_col(mapping = aes(
+    x = Publisher,
+    y = top_checkouts,
+    fill = Publisher,
+    text = paste("Checkouts:", top_checkouts))
+    )
+ggplotly(bar_plot, tooltip = "text")
