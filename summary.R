@@ -11,3 +11,6 @@ ggplot() +
   geom_point(data = ebook_checkouts_per_year, aes(x = CheckoutYear, y = checkouts_per_year)) +
   geom_point(data = physical_book_checkouts_per_year, aes(x = CheckoutYear, y = checkouts_per_year))
 # Average number of checkouts per item?
+avg_checkouts <- spl_data %>% summarise(avg = mean(Checkouts)) %>% pull(avg)
+# Top 5 most popular subjects
+popular_subjects <- spl_data %>% group_by(Subjects)
