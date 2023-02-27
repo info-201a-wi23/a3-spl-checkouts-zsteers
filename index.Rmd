@@ -43,14 +43,13 @@ library("dplyr")
 library("ggplot2")
 library("plotly")
 spl_data <- read.csv("/Users/zoesteers/Downloads/2017-2023-10-Checkouts-SPL-Data.csv")
-ebook_checkouts_per_year <- spl_data %>% filter(MaterialType == "EBOOK") %>% group_by(CheckoutYear, MaterialType) %>% summarise(checkouts_per_year = sum(Checkouts))
-physical_book_checkouts_per_year <- spl_data %>% filter(MaterialType == "BOOK") %>% group_by(CheckoutYear, MaterialType) %>% summarise(checkouts_per_year = sum(Checkouts))
+ebook_checkouts_per_year <- spl_data %>% filter(MaterialType == "EBOOK") %>% group_by(CheckoutYear, MaterialType) %>% summarize(checkouts_per_year = sum(Checkouts))
+physical_book_checkouts_per_year <- spl_data %>% filter(MaterialType == "BOOK") %>% group_by(CheckoutYear, MaterialType) %>% summarize(checkouts_per_year = sum(Checkouts))
 ggplot() +
   geom_line(data = ebook_checkouts_per_year, aes(x = CheckoutYear, y = checkouts_per_year, color = MaterialType)) +
   geom_line(data = physical_book_checkouts_per_year, aes(x = CheckoutYear, y = checkouts_per_year, color = MaterialType)) +
   geom_point(data = ebook_checkouts_per_year, aes(x = CheckoutYear, y = checkouts_per_year)) +
   geom_point(data = physical_book_checkouts_per_year, aes(x = CheckoutYear, y = checkouts_per_year))
-
 ```
 
 Include a chart. Make sure to describe why you included the chart, and what patterns emerged
@@ -66,8 +65,6 @@ The first chart that you will create and include will show the trend over time o
 When we say "clear" or "human readable" titles and labels, that means that you should not just display the variable name.
 
 Here's an example of how to run an R script inside an RMarkdown file:
-
-\`\`\``{r, echo = FALSE, warning = FALSE, code = readLines("chart1_example.R")}`
 
 ### Second Trends Over Time Chart
 
