@@ -38,7 +38,7 @@ Feel free to calculate and report values that you find relevant.
 
 ### First Trends Over Time Chart
 
-```{r, echo=FALSE}
+```{r echo = FALSE}
 library("dplyr")
 library("ggplot2")
 library("plotly")
@@ -82,8 +82,6 @@ When we say "clear" or "human readable" titles and labels, that means that you s
 
 Here's an example of how to run an R script inside an RMarkdown file:
 
-\`\`\``{r, echo = FALSE, code = readLines("chart2_example.R")}`
-
 ### Your Choice
 
 The last chart is up to you. It could be a line plot, scatter plot, histogram, bar plot, stacked bar plot, and more. Here are some requirements to help guide your design:
@@ -93,5 +91,3 @@ The last chart is up to you. It could be a line plot, scatter plot, histogram, b
 -   You need a legend for your different line colors and a clear legend title
 
 Here's an example of how to run an R script inside an RMarkdown file:
-
-\`\`\``{r, echo = FALSE, code = readLines("chart2_example.R")}`
