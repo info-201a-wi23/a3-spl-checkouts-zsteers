@@ -3,17 +3,9 @@ title: "A3: SPL Library Checkouts"
 output: html_document
 ---
 
-```{r echo=FALSE}
-library("dplyr")
-library("ggplot2")
-library("scales")
-install.packages("plotly")
-library("plotly")
-read.csv("/Users/zoesteers/Downloads/2017-2023-10-Checkouts-SPL-Data.csv")
-```
-
 ### Introduction
 
+This data has been pulled from [Seattle Open Data](https://data.seattle.gov/Community/Checkouts-by-Title/tmmm-ytt6). I chose to observe the changes in checkout materials over the course of the last 5-6 years, the most popular publishers, the average checkouts each title has, and the publication year that has accumulated the most checkouts. For the checkout material trends, I was very curious to see how the numbers changed before, during, and after COVID. I was interested in learning which publishers are the most popular based on the checkouts because I realized I didn't know many other publishers beside Penguin. The average checkouts and publication year with the most checkouts was something I didn't have a hypothesis going into so I wanted to learn a bit more about this aspect.
 An introduction of the data and a description of the trends/books/items you are choosing to analyze (and why!) -Trends of physical and ebook checkouts over time -Average number of checkouts per item - -Publication year with the most checkouts. -Top 5 most popular subjects 
 
 ### Summary Information
@@ -45,33 +37,74 @@ library("dplyr")
 library("ggplot2")
 library("plotly")
 spl_data <- read.csv("/Users/zoesteers/Downloads/2017-2023-10-Checkouts-SPL-Data.csv")
-ebook_checkouts_per_year <- spl_data %>% filter(MaterialType == "EBOOK") %>% group_by(CheckoutYear, MaterialType) %>% summarize(checkouts_per_year = sum(Checkouts))
-physical_book_checkouts_per_year <- spl_data %>% filter(MaterialType == "BOOK") %>% group_by(CheckoutYear, MaterialType) %>% summarize(checkouts_per_year = sum(Checkouts))
+
+ebook_checkouts_per_year <- spl_data %>% 
+  filter(MaterialType == "EBOOK") %>% 
+  group_by(CheckoutYear, MaterialType) %>% 
+  summarise(checkouts_per_year = sum(Checkouts))
+
+physical_book_checkouts_per_year <- spl_data %>% 
+  filter(MaterialType == "BOOK") %>% 
+  group_by(CheckoutYear, MaterialType) %>% 
+  summarise(checkouts_per_year = sum(Checkouts))
+
 ggplot() +
-  geom_line(data = ebook_checkouts_per_year, aes(x = CheckoutYear, y = checkouts_per_year, color = MaterialType)) +
-  geom_line(data = physical_book_checkouts_per_year, aes(x = CheckoutYear, y = checkouts_per_year, color = MaterialType)) +
-  geom_point(data = ebook_checkouts_per_year, aes(x = CheckoutYear, y = checkouts_per_year)) +
-  geom_point(data = physical_book_checkouts_per_year, aes(x = CheckoutYear, y = checkouts_per_year))
+  geom_line(data = physical_book_checkouts_per_year, 
+            aes(x = CheckoutYear, 
+                y = checkouts_per_year, 
+                color = MaterialType)) +
+  geom_line(data = ebook_checkouts_per_year, 
+            aes(x = CheckoutYear, 
+                y = checkouts_per_year, 
+                color = MaterialType)) +
+  geom_point(data = ebook_checkouts_per_year, 
+             aes(x = CheckoutYear, 
+                 y = checkouts_per_year)) +
+  geom_point(data = physical_book_checkouts_per_year, 
+             aes(x = CheckoutYear, 
+                 y = checkouts_per_year)) +
+  scale_x_continuous(breaks =seq(2017, 2023, 1)) +
+  labs(title = "Physical Book and Ebook Trends",
+       x = "Checkout Year",
+       y = "Number of Checkouts",
+       )
 ```
 
-Include a chart. Make sure to describe why you included the chart, and what patterns emerged
-
-The first chart that you will create and include will show the trend over time of your variable/topic/interest. Think carefully about what you want to communicate to your user (you may have to find relevant trends in the dataset first!). Here are some requirements to help guide your design:
-
--   Show more than one, but fewer than \~10 trends
-    -   For example, two books, or 5 different mediums
--   You must have clear x and y axis labels
--   The chart needs a clear title 
--   You need a legend for your different line colors and a clear - legend title In your .Rmd file, make sure to describe why you included the chart, and what patterns emerged
-
-When we say "clear" or "human readable" titles and labels, that means that you should not just display the variable name.
-
-Here's an example of how to run an R script inside an RMarkdown file:
+This chart illustrates the changes in physical book vs ebook checkouts from 2017-2023. We can see the very obvious change beginning in 2020 which coincides with the start of the COVID-19 pandemic. The sharp drop in physical book checkouts and the spike in ebook checkouts can be attributed to the need for social distancing and public spaces, like the library, not being open. Ebook checkouts can be made remotely, while physical book checkouts have to be done in person, which further explains the change that can be observed.
 
 ### Second Trends Over Time Chart
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
+library("dplyr")
+library("ggplot2")
+library("plotly")
+library("scales")
 
+digital_usage_class <- spl_data %>% 
+  filter(UsageClass == "Digital") %>% 
+  group_by(UsageClass, CheckoutYear) %>%
+  summarize(digital_checkouts_per_year = sum(Checkouts))
+
+physical_usage_class <- spl_data %>% 
+  filter(UsageClass == "Physical") %>% 
+  group_by(UsageClass, CheckoutYear) %>%
+  summarize(physical_checkouts_per_year = sum(Checkouts))
+
+ggplot() +
+  geom_line(data = physical_usage_class,
+            aes(x = CheckoutYear,
+                y = physical_checkouts_per_year,
+                color = UsageClass)) +
+  geom_line(data = digital_usage_class,
+            aes(x = CheckoutYear,
+                y = digital_checkouts_per_year,
+                color = UsageClass)) +
+  scale_x_continuous(breaks =seq(2017, 2023, 1)) +
+  labs(title = "Usage Class Trends",
+       x = "Checkout Year",
+       y = "Number of Checkouts",
+  ) +
+  scale_y_continuous(labels = label_number_si())
 ```
 
 Include a chart. Make sure to describe why you included the chart, and what patterns emerged
@@ -90,7 +123,7 @@ Here's an example of how to run an R script inside an RMarkdown file:
 
 ### Your Choice
 
-```{r}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 popular_publishers <- spl_data %>% 
   group_by(Publisher) %>% 
   summarize(top_checkouts = sum(n_distinct(Checkouts, na.rm = TRUE))) %>%
@@ -103,7 +136,9 @@ bar_plot <- ggplot(data = popular_publishers) +
     y = top_checkouts,
     fill = Publisher,
     text = paste("Checkouts:", top_checkouts))
-    )
+    ) + labs(title = "Top Publishers",
+             x = "Publishers",
+             y = "Number of Checkouts")
 ggplotly(bar_plot, tooltip = "text")
 ```
 
