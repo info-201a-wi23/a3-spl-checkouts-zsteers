@@ -38,7 +38,7 @@ Feel free to calculate and report values that you find relevant.
 
 ### First Trends Over Time Chart
 
-```{r echo=FALSE}
+```{r, echo=FALSE}
 library("dplyr")
 library("ggplot2")
 library("plotly")
