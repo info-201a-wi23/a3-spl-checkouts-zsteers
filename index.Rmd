@@ -3,7 +3,7 @@ title: "A3: SPL Library Checkouts"
 output: html_document
 ---
 
-```{r, echo=FALSE}
+```{r echo=FALSE}
 library("dplyr")
 library("ggplot2")
 library("scales")
@@ -14,7 +14,9 @@ read.csv("/Users/zoesteers/Downloads/2017-2023-10-Checkouts-SPL-Data.csv")
 
 ### Introduction
 
-An introduction of the data and a description of the trends/books/items you are choosing to analyze (and why!) -Trends of physical and ebook checkouts over time -Average number of checkouts per item - -Publication year with the most checkouts. -Top 5 most popular subjects \### Summary Information
+An introduction of the data and a description of the trends/books/items you are choosing to analyze (and why!) -Trends of physical and ebook checkouts over time -Average number of checkouts per item - -Publication year with the most checkouts. -Top 5 most popular subjects 
+
+### Summary Information
 
 Write a summary paragraph of findings that includes the 5 values calculated from your summary information R script
 
@@ -38,7 +40,7 @@ Feel free to calculate and report values that you find relevant.
 
 ### First Trends Over Time Chart
 
-```{r echo = FALSE}
+```{r echo = FALSE, warning = FALSE, message = FALSE}
 library("dplyr")
 library("ggplot2")
 library("plotly")

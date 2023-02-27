@@ -13,4 +13,4 @@ ggplot() +
 # Average number of checkouts per item?
 avg_checkouts <- spl_data %>% summarise(avg = mean(Checkouts)) %>% pull(avg)
 # Top 5 most popular subjects
-popular_subjects <- spl_data %>% group_by(Subjects) %>%
+popular_subjects <- spl_data %>% group_by(Subjects) %>% summarize(top_subjects = )
