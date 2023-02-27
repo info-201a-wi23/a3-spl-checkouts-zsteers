@@ -2,6 +2,7 @@
 title: "A3: SPL Library Checkouts"
 output: html_document
 ---
+
 ```{r, echo=FALSE}
 library("dplyr")
 library("ggplot2")
@@ -13,13 +14,7 @@ read.csv("/Users/zoesteers/Downloads/2017-2023-10-Checkouts-SPL-Data.csv")
 
 ### Introduction
 
-An introduction of the data and a description of the trends/books/items you are choosing to analyze (and why!)
--Trends of physical and ebook checkouts over time
--Average number of checkouts per item
--Top 3 most popular publishers
--Publication year with the most checkouts.
--Top 5 most popular subjects
-### Summary Information
+An introduction of the data and a description of the trends/books/items you are choosing to analyze (and why!) -Trends of physical and ebook checkouts over time -Average number of checkouts per item - -Publication year with the most checkouts. -Top 5 most popular subjects \### Summary Information
 
 Write a summary paragraph of findings that includes the 5 values calculated from your summary information R script
 
@@ -42,6 +37,21 @@ Feel free to calculate and report values that you find relevant.
 -   What are possible limitations or problems with this data? (at least 200 words)
 
 ### First Trends Over Time Chart
+
+```{r echo=FALSE}
+library("dplyr")
+library("ggplot2")
+library("plotly")
+spl_data <- read.csv("/Users/zoesteers/Downloads/2017-2023-10-Checkouts-SPL-Data.csv")
+ebook_checkouts_per_year <- spl_data %>% filter(MaterialType == "EBOOK") %>% group_by(CheckoutYear, MaterialType) %>% summarise(checkouts_per_year = sum(Checkouts))
+physical_book_checkouts_per_year <- spl_data %>% filter(MaterialType == "BOOK") %>% group_by(CheckoutYear, MaterialType) %>% summarise(checkouts_per_year = sum(Checkouts))
+ggplot() +
+  geom_line(data = ebook_checkouts_per_year, aes(x = CheckoutYear, y = checkouts_per_year, color = MaterialType)) +
+  geom_line(data = physical_book_checkouts_per_year, aes(x = CheckoutYear, y = checkouts_per_year, color = MaterialType)) +
+  geom_point(data = ebook_checkouts_per_year, aes(x = CheckoutYear, y = checkouts_per_year)) +
+  geom_point(data = physical_book_checkouts_per_year, aes(x = CheckoutYear, y = checkouts_per_year))
+
+```
 
 Include a chart. Make sure to describe why you included the chart, and what patterns emerged
 
