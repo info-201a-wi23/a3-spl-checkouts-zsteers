@@ -6,29 +6,19 @@ output: html_document
 ### Introduction
 
 This data has been pulled from [Seattle Open Data](https://data.seattle.gov/Community/Checkouts-by-Title/tmmm-ytt6). I chose to observe the changes in checkout materials over the course of the last 5-6 years, the most popular publishers, the average checkouts each title has, and the publication year that has accumulated the most checkouts. For the checkout material trends, I was very curious to see how the numbers changed before, during, and after COVID. I was interested in learning which publishers are the most popular based on the checkouts because I realized I didn't know many other publishers beside Penguin. The average checkouts and publication year with the most checkouts was something I didn't have a hypothesis going into so I wanted to learn a bit more about this aspect.
-An introduction of the data and a description of the trends/books/items you are choosing to analyze (and why!) -Trends of physical and ebook checkouts over time -Average number of checkouts per item - -Publication year with the most checkouts. -Top 5 most popular subjects 
 
 ### Summary Information
 
-Write a summary paragraph of findings that includes the 5 values calculated from your summary information R script
-
-These will likely be calculated using your DPLYR skills, answering questions such as:
-
--   What is the average number of checkouts for each item?
--   What is the month or year with the most/least checkouts for a book that you're interested in?
--   What is the month or year with the most/least checkouts for ebooks?
--   How has the number of print book checkouts changed over time?
-
-Feel free to calculate and report values that you find relevant.
+The 5 values that I collected were :
+Average number of checkouts: 23.47
+Month with the most checkouts: 6
+Year with the most checkouts: 2020
+Publisher with the most checkouts: Random House, Inc.
+Digital checkouts vs. physical checkouts in 2020: ~1.8 million vs. 500k
 
 ### The Dataset
 
--   Who collected/published the data?\
--   What are the parameters of the data (dates, number of checkouts, kinds of books, etc.)?
--   How was the data collected or generated?\
--   Why was the data collected?\
--   What, if any, ethical questions do you need to consider when working with this data?\
--   What are possible limitations or problems with this data? (at least 200 words)
+The data was collected and provided by the Seattle Public Library, and published by Seattle Open Data. The parameters of the data are number of checkouts, publishers, month, and year. The data was collected from the records of checkouts from the locations of the Seattle Public Library which were compiled together to create this dataset. The data was collected to bring more data to the public. Privacy could be a possible consideration in this data set, though the dataset does not include any personal data to trace it back to a person so it is completely anonymous. I didn't run into many limitations while working with this data, though I did try to find the top five subjects and saw that most books had multiple subjects in the entry, which made finding the most popular a bit more difficult, so I ended up switching to finding the most popular publishers based on the number of checkouts as it was simpler. The publishers were not a list like the different entries in the subject column. Besides the issue with the subjects column, I didn't really run into much else that affected my ability to successfully come up with values that made sense.
 
 ### First Trends Over Time Chart
 
@@ -107,26 +97,14 @@ ggplot() +
   scale_y_continuous(labels = label_number_si())
 ```
 
-Include a chart. Make sure to describe why you included the chart, and what patterns emerged
-
-The second chart that you will create and include will show another trend over time of your variable/topic/interest. Think carefully about what you want to communicate to your user (you may have to find relevant trends in the dataset first!). Here are some requirements to help guide your design:
-
--   Show more than one, but fewer than \~10 trends
-    -   For example, two books, or 5 different mediums
--   You must have clear x and y axis labels
--   The chart needs a clear title 
--   You need a legend for your different line colors and a clear - legend title In your .Rmd file, make sure to describe why you included the chart, and what patterns emerged
-
-When we say "clear" or "human readable" titles and labels, that means that you should not just display the variable name.
-
-Here's an example of how to run an R script inside an RMarkdown file:
+This graph is similar to the last one, but instead takes into account ALL digital and physical checkouts. This includes movies, music, magazines, video disks, audiobooks, and more. This shows how COVID-19 affected even more than only the checkouts of physical books and ebooks, but also many more materials. The number of checkouts overall is much higher, and while the trends look quite similar, there are changes that are more dramatic as a result of more materials being counted.
 
 ### Your Choice
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 popular_publishers <- spl_data %>% 
   group_by(Publisher) %>% 
-  summarize(top_checkouts = sum(n_distinct(Checkouts, na.rm = TRUE))) %>%
+  summarize(top_checkouts = sum(Checkouts, na.rm = TRUE)) %>%
   arrange(desc(top_checkouts)) %>% 
   filter(!Publisher %in% c(" ", "NULL")) %>% 
   filter(row_number() <= 5)
@@ -136,16 +114,12 @@ bar_plot <- ggplot(data = popular_publishers) +
     y = top_checkouts,
     fill = Publisher,
     text = paste("Checkouts:", top_checkouts))
-    ) + labs(title = "Top Publishers",
+    ) + 
+  labs(title = "Top Publishers",
              x = "Publishers",
-             y = "Number of Checkouts")
+             y = "Number of Checkouts") +
+  scale_y_continuous(labels = label_number_si())
 ggplotly(bar_plot, tooltip = "text")
 ```
 
-The last chart is up to you. It could be a line plot, scatter plot, histogram, bar plot, stacked bar plot, and more. Here are some requirements to help guide your design:
-
--   You must have clear x and y axis labels
--   The chart needs a clear title 
--   You need a legend for your different line colors and a clear legend title
-
-Here's an example of how to run an R script inside an RMarkdown file:
+This bar chart shows the publishers of books that were checked out the most overall. The popularity of certain publishing companies is illustrated in the figure.
